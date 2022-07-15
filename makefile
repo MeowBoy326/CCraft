@@ -1,15 +1,15 @@
-CC = gcc
-CFLAGS = -std=c99 -O2 -Wpedantic
+CC ?= gcc
+CFLAGS += -std=c99 -O2 -Wpedantic
 CFLAGS += -Ilib/glfw/include -Ilib/glad/include
-LDFLAGS = lib/glfw/src/libglfw3.a lib/glad/src/gl.o
+LDFLAGS ?= lib/glfw/src/libglfw3.a lib/glad/src/glad.o
 
 SRC  = $(wildcard src/**/*.c) $(wildcard src/*.c)
 OBJ  = $(SRC:.c=.o)
-BIN = bin
+BIN  = bin
 
 .PHONY: all clean
 
-all: dirs libs game
+all: clean dirs game
 
 libs:
 ifeq ($(OS),Windows_NT)
@@ -17,7 +17,7 @@ ifeq ($(OS),Windows_NT)
 else
 	cd lib/glfw && cmake . -DGLFW_USE_WAYLAND=1 -DGLFW_VULKAN_STATIC=1 && make
 endif
-	cd lib/glad && $(CC) -o src/gl.o -Iinclude -c src/gl.c
+	cd lib/glad && $(CC) -o src/glad.o -Iinclude -c src/glad.c
 
 dirs:
 	mkdir -p ./$(BIN)
@@ -37,7 +37,7 @@ else
 endif
 
 %.o: %.c
-	$(CC) -o $@ -c $< $(CFLAGS)
+	$(CC) $(CFLAGS) -o $@ -c $<
 
 clean:
 	rm -rf $(BIN) $(OBJ) 
