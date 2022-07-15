@@ -6,8 +6,14 @@
 
 #define VERSION "0.0.0-dev"
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
 	glViewport(0, 0, width, height);
+}
+
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+		glfwSetWindowShouldClose(window, GLFW_TRUE);
+	}
 }
 
 int main(void) {
@@ -51,6 +57,7 @@ int main(void) {
 	/* Setup callbacks */
 	glfwSetErrorCallback(GLFW_error_callback);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+	glfwSetKeyCallback(window, key_callback);
 
 	/* GLAD fetches and loads supported OpenGL functions */
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
