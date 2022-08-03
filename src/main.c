@@ -1,9 +1,11 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <stdio.h>
+#include <math.h>
 
 #include "logging.h"
 
+#define FREQ 0.02463994
 #define VERSION "0.0.0-dev"
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
@@ -11,7 +13,9 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+	if ((key    == GLFW_KEY_ESCAPE ||
+		 key    == GLFW_KEY_Q) && 
+		 action == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 	}
 }
@@ -22,7 +26,7 @@ int main(void) {
 "------------------------------- CCraft "VERSION" -------------------------------\n"
 "--------------------------------------------------------------------------------\n");
 
-#ifdef CCRAFT_DEBUG
+#ifdef CCRAFT_DEBUG /* Testing alignment */
 	CCraft_info("Test CCraft info message");
 	CCraft_debug("Test CCraft debug message");
 	CCraft_warn("Test CCraft warn message");
@@ -70,11 +74,18 @@ int main(void) {
 	glfwGetFramebufferSize(window, &width, &height);
 	glViewport(0, 0, width, height);
 
+	unsigned char i = 0;
+	unsigned char alpha = 255;
 	/* Render loop */
 	while (!glfwWindowShouldClose(window)) {
+		glClearColor((float)((sin(FREQ*i)*127)+128)/255, (float)((sin((FREQ*i)+2)*127)+128)/255, (float)((sin((FREQ*i)+4)*127)+128)/255, alpha/255);
+		glClear(GL_COLOR_BUFFER_BIT);
 		glfwSwapBuffers(window);
 		glfwPollEvents();
+		i++;
 	}
+
+	/* Cleanup */
 	glfwDestroyWindow(window);
 	glfwTerminate();
     return 0;

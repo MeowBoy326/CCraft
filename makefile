@@ -1,5 +1,7 @@
 CC ?= gcc
-CFLAGS += -std=c99 -O2 -Wpedantic
+CFLAGS += -std=c99 -O2
+CFLAGS += -fPIE -D_FORTIFY_SOURCE=2
+CFLAGS += -Wpedantic -Werror
 CFLAGS += -Ilib/glfw/include -Ilib/glad/include
 LDFLAGS ?= lib/glfw/src/libglfw3.a lib/glad/src/glad.o
 
