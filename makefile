@@ -1,9 +1,9 @@
 CC ?= gcc
 CFLAGS += -std=c99 -O2
 CFLAGS += -fPIE -D_FORTIFY_SOURCE=2
-CFLAGS += -Wpedantic -Werror
-CFLAGS += -Ilib/glfw/include -Ilib/glad/include
-LDFLAGS ?= lib/glfw/src/libglfw3.a lib/glad/src/glad.o
+CFLAGS += -Wpedantic -Werror -Wall
+CFLAGS += -Ilib/glad/include
+LDFLAGS ?= obj/glad.o obj/libglwf3.a
 
 SRC  = $(wildcard src/**/*.c) $(wildcard src/*.c)
 OBJ  = $(SRC:.c=.o)
@@ -17,9 +17,9 @@ libs:
 ifeq ($(OS),Windows_NT)
 	cd lib/glfw && cmake . -G "MinGW Makefiles" -DUSE_MSVC_RUNTIME_LIBRARY_DLL=0 -DGLFW_VULKAN_STATIC=1 && mingw32-make
 else
-	cd lib/glfw && cmake . -DGLFW_USE_WAYLAND=1 -DGLFW_VULKAN_STATIC=1 && make
+	cd obj && cmake -S ../lib/glfw -DGLFW_USE_WAYLAND=1 -DGLFW_VULKAN_STATIC=1 && make
 endif
-	cd lib/glad && $(CC) -o src/glad.o -Iinclude -c src/glad.c
+	$(CC) -o obj/glad.o -Ilib/glad/include -c lib/glad/src/glad.c
 
 dirs:
 	mkdir -p ./$(BIN)

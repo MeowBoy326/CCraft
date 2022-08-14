@@ -1,10 +1,8 @@
 bin/
-lib/glfw
+obj/
 
 .vscode/
 
-*.o
-*.obj
 *.exe
 *.a
 *.lib
