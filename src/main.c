@@ -4,9 +4,8 @@
 #include <math.h>
 
 #include "logging.h"
+#include "window.h"
 
-#define FREQ 0.02463994
-static float freq = 0.02463994;
 #define VERSION "0.0.0-dev"
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
@@ -18,10 +17,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		 key    == GLFW_KEY_Q) && 
 		 action == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
-	} else if (key == GLFW_KEY_UP) {
-		freq += FREQ;
-	} else if (key == GLFW_KEY_DOWN) {
-		freq -= FREQ;
 	}
 }
 
@@ -79,15 +74,11 @@ int main(void) {
 	glfwGetFramebufferSize(window, &width, &height);
 	glViewport(0, 0, width, height);
 
-	unsigned char i = 0;
-	unsigned char alpha = 255;
 	/* Render loop */
 	while (!glfwWindowShouldClose(window)) {
-		glClearColor((float)((sin(freq*i)*127)+128)/255, (float)((sin((freq*i)+2)*127)+128)/255, (float)((sin((freq*i)+4)*127)+128)/255, alpha/255);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glfwSwapBuffers(window);
 		glfwPollEvents();
-		i++;
 	}
 
 	/* Cleanup */
